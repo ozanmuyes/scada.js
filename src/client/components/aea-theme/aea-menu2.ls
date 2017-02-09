@@ -60,8 +60,12 @@ Ractive.components["aea-menu2"] = Ractive.extend do
             hash = '/' unless hash
 
             is-match-found = no
+            menu = __.get \menu
 
-            for x in __.get \menu
+            if typeof menu is \undefined
+                return
+
+            for x in menu
                 if x.url is \# or (not x.url and not x.sub-menu)
                     continue
 

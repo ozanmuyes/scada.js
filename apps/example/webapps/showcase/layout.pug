@@ -1,7 +1,10 @@
+// this is the navigation engine
+navigation(selected="{{ currPage }}")
+
 aea-theme
     aea-menu2(menu="{{menu}}" debug="{{ menuDebug }}")
         icon-user
-        span John DOE
+        span {{ login.user.name }}
         checkbox(checked="{{ menuDebug }}") Debug?
 
     aea-content
@@ -9,19 +12,31 @@ aea-theme
             p hi! this is header!
 
         +partial('body')
-            include ./previews/r-table.pug
-            include ./previews/formal-field.pug
-            include ./previews/csv-importer.pug
-            include ./previews/file-read.pug
-            include ./previews/print-button.pug
-            include ./previews/input-field.pug
-            include ./previews/checkbox.pug
-            include ./previews/ack-button.pug
-            include ./previews/example-component.pug
-            include ./previews/search-combobox.pug
-            include ./previews/date-picker.pug
-            include ./previews/test-data-table/my-table.pug
-            include ./previews/todo.pug
+            .row
+                //- page(name="/ack-button", curr="{{ currPage }}")
+                //-     include ./pages/ack-button/ack-button.pug
+                page(name="/checkbox", curr="{{ currPage }}")
+                    include ./pages/checkbox/checkbox.pug
+                page(name="/csv-importer", curr="{{ currPage }}")
+                    include ./pages/csv-importer/csv-importer.pug
+                page(name="/date-picker", curr="{{ currPage }}")
+                    include ./pages/date-picker/date-picker.pug
+                //- page(name="/example-component", curr="{{ currPage }}")
+                //-     include ./pages/example-component/example-component.pug
+                page(name="/file-read", curr="{{ currPage }}")
+                    include ./pages/file-read/file-read.pug
+                //- TODO formal-field
+                //- page(name="/input-field", curr="{{ currPage }}")
+                //-     include ./pages/input-field/input-field.pug
+                //- page(name="/print-button", curr="{{ currPage }}")
+                //-     include ./pages/print-button/print-button.pug
+                //- TODO r-table
+                //- page(name="/search-combobox", curr="{{ currPage }}")
+                //-     include ./pages/search-combobox/search-combobox.pug
+                //- page(name="/test-data-table", curr="{{ currPage }}")
+                //-     include ./pages/test-data-table/my-table.pug
+                page(landing-page="true" name="/todo", curr="{{ currPage }}")
+                    include ./pages/todo/todo.pug
 
     aea-footer
         +partial('right')

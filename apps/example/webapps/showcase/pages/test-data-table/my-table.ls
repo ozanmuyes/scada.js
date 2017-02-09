@@ -8,7 +8,7 @@ simulated-data = [{
     } for [1 to 10]]
 
 
-export my-table =
+export fragment =
     settings:
         page-size: 20   # optional, 0 or null for infinite page
         default: ->

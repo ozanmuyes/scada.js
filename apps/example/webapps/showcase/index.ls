@@ -1,334 +1,321 @@
-require! 'prelude-ls': {group-by, sort-by}
-require! components
-require! 'aea': {sleep, unix-to-readable}
-require! './simulate-db': {db}
-require! './previews/test-data-table/my-table': {my-table}
+# require! 'prelude-ls': {group-by, sort-by}
+# require! components
+# require! 'aea': {sleep, unix-to-readable}
+# require! './simulate-db': {db}
+# require! './pages/test-data-table/my-table': {my-table}
 
-ractive = new Ractive do
-    el: '#main-output'
-    template: RACTIVE_PREPARSE('layout.pug')
-    data:
-        db: db
-        my-table: my-table
-        button:
-            show: yes
-            send-value: ''
-            bound-val: ''
-            info-title: ''
-            info-message: ''
-            output: 'hello'
-        csv-importer:
-            show: yes
-            test-data: """
-                74LPPD2KZ7N,ACILI EZME 200 GR,5T1544H8
-                74LPPD2L06J,ACILI EZME 200 GR MEAL BOX,4NL8C89Y
-                74LPPD2L08J,ACILI EZME 3000 GR,55LE456H
-                """
+require! 'components'
+require! 'aea': {sleep, unix-to-readable, merge, pack}
+require! 'prelude-ls': {sum, split, sort-by, flatten, group-by, reverse, map, take, find}
 
-        combobox:
-            show: yes
-            selected:
-                * id: \aaa
-                * id: \bbb
-                * id: \ccc
-            products:
-                * id: \1
-                  name: \apple
-                * id: \2
-                  name: \strawberry
-                * id: \3
-                  name: \melon
-                * id: \4
-                  name: "tomato"
-            units:
-                * id: \1
-                  name: \kg
-                * id: \2
-                  name: \gr
-                * id: \3
-                  name: \packet               
-            list1:
-                * id: \1
-                  name: \hello
-                * id: \2
-                  name: \world
-                * id: \3
-                  name: \heyy!
-                * id: \4
-                  name: "çalış öğün"
-                * id: \5
-                  name: "ÇALIŞ ÖĞÜN"
-            list2:
-                * id: \aaa
-                  name: \totally
-                * id: \bbb
-                  name: \different
-                * id: \ccc
-                  name: \list
-            boundSelected: null
+require! './base': {ractive}
+# main pages
+# require! './pages/ack-button/ack-button': {ack-button-fragment: fragment}
+require! './pages/checkbox/checkbox': {fragment: checkbox-fragment}
+require! './pages/csv-importer/csv-importer': {fragment: csv-importer-fragment}
+require! './pages/date-picker/date-picker': {fragment: date-picker-fragment}
+# require! './pages/example-component/example-component': {example-component-fragment: fragment}
+require! './pages/file-read/file-read': {fragment: file-read-fragment}
+# TODO formal-field
+# require! './pages/input-field/input-field': {input-field-fragment: fragment}
+# require! './pages/print-button/print-button': {print-button-fragment: fragment}
+# TODO r-table
+# require! './pages/search-combobox/search-combobox': {search-combobox-fragment: fragment}
+# require! './pages/test-data-table/my-table': {fragment: test-data-table-fragment}
+require! './pages/todo/todo': {fragment: todo-fragment}
 
-        combobox-list: ->
-            @get \combobox.list2
+# Ractive data
+ractive-data =
+    login:
+        ok: yes # for demonstration purposes only
+    # db: null
+    # TODO my-table: test-data-table-fragment
+    menu:
+        # * title: "ack-button"
+        #   url: '#/ack-button'
+        * title: "checkbox"
+          url: "#/checkbox"
+        * title: "csv-importer"
+          url: "#/csv-importer"
+        * title: "date-picker"
+          url: "#/date-picker"
+        # * title: "example-component"
+        #   url: "#/example-component"
+        * title: "file-read"
+          url: "#/file-read"
+        # TODO formal-field
+        # * title: "input-field"
+        #   url: "#/input-field"
+        # * title: "print-button"
+        #   url: "#/print-button"
+        # TODO r-table
+        # * title: "search-combobox"
+        #   url: "#/search-combobox"
+        # * title: "test-data-table"
+        #   url: "#/test-data-table"
+        * title: "todo"
+          url: "#/todo"
+        
+    unix-to-readable: unix-to-readable
 
-        date-picker:
-            show: yes
-        checkbox:
-            checked1: no
-            checked2: no
-        file-read:
-            show: yes
-            files: []
-        formal-field:
-            show: yes
-            value1: 3
-            value2: \Paket
-            tempvalue:"mahmut"
-            combobox:
-                * id:\Paket, name:\Paket
-                * id:\Koli, name: \Koli
-        curr:
-            value1: 5
-        units:
-            * id:\Paket, name:\Paket
-            * id:\Koli, name: \Koli
-        todo:
-            show: yes
-            todos1:
-                * id: 1
-                  content: 'This is done by default'
-                  done-timestamp: 1481778240000
-                * id: 2
-                  content: 'This is done by default too'
-                  done-timestamp: 1481778242000
-                * id: 3
-                  content: 'This can not be undone'
-                  can-undone: false
-                * id: 4
-                  content: 'This has a due time'
-                  due-timestamp: 1481778240000
-                * id: 5
-                  content: 'This depends on 1 and 2'
-                * id: 6
-                  content: 'This depends on 3 and 5 (above one)'
+    csv-importer: csv-importer-fragment
+    date-picker: date-picker-fragment
+    checkbox: checkbox-fragment
+    file-read: file-read-fragment
 
-            log1: []
-            todos2:
-                * id: 1
-                  content: 'Do this'
-                * id: 2
-                  content: 'Do that'
-                * id: 3
-                  content: 'Finally do this'
-            log2: []
-        unix-to-readable: unix-to-readable
-        menu: []
-        menu-links:
-            * title: "Siparişler"
-              url: '#/orders'
-            * title: "İş Planları"
-              url: '#/production-jobs'
-              icon: "list-alt"
-            * title: "Paketleme"
-              url: '#/bundling'
-              icon: 'gift'
-            * title: "Sevkiyat"
-              sub-menu:
-                * title: "dispatch submenu1"
-                  url: '#/dispatch/1'
-                * title: "dispatch submenu2"
-                  url: '#/dispatch/2'
-                * title: "dispatch submenu3"
-                  url: '#/dispatch/3'
-                * title: "dispatch submenu4"
-                  url: '#/dispatch/4'
+for k, v of ractive-data
+    ractive.set "#{k}", v
 
-            * title: "Depo İstek Formu"
-              url: '#/raw-material-requests'
-              icon: 'shopping-cart'
-            * title: "Satın Alma"
-              url: '#/raw-material-purchases'
-              icon: 'briefcase'
-            * title: "Hammadde Kabul"
-              url: '#/raw-material-admission'
-              icon: 'download-alt'
-            * title: "Tanımlamalar"
-              icon:"cog"
-              sub-menu:
-                * title: "Müşteri Tanımla"
-                  url: '#/definitions/client'
-                * title: "Marka Tanımla"
-                  url: '#/definitions/brands'
-                * title: "Tedarikçi Tanımla"
-                  url: '#/definitions/supplier'
-                * title: "Hammadde Tanımla"
-                  url: '#/definitions/raw-material'
-                * title: "Reçete Tanımla"
-                  url: '#/definitions/recipe'
-                * title: "Kap Tanımla"
-                  url: '#/definitions/container'
-                * title: "Paket Tanımla"
-                  url: '#/definitions/packaging'
-                * title: "Çalışan Tanımla"
-                  url: '#/definitions/workers'
-                  icon: 'user'
+# TODO Split events below to relevant files
 
-ractive.on do
-    'complete': ->
-        __ = @
-        <- sleep 10ms
-        __.set \menu, __.get \menuLinks
+# ractive = new Ractive do
+#     el: '#main-output'
+#     template: RACTIVE_PREPARSE('layout.pug')
+#     data:
+#         # db: db
+#         # my-table: my-table
+#         button:
+#             show: yes
+#             send-value: ''
+#             bound-val: ''
+#             info-title: ''
+#             info-message: ''
+#             output: 'hello'
+#         # csv-importer:
+#         #     show: yes
+#         #     test-data: """
+#         #         74LPPD2KZ7N,ACILI EZME 200 GR,5T1544H8
+#         #         74LPPD2L06J,ACILI EZME 200 GR MEAL BOX,4NL8C89Y
+#         #         74LPPD2L08J,ACILI EZME 3000 GR,55LE456H
+#         #         """
 
-    test-ack-button1: (ev, value) ->
-        ev.component.fire \state, \doing
-        <- sleep 5000ms
-        ractive.set \button.sendValue, value
-        ev.component.fire \state, \done...
+#         combobox:
+#             show: yes
+#             list1:
+#                 * id: \1
+#                   name: \hello
+#                 * id: \2
+#                   name: \world
+#                 * id: \3
+#                   name: \heyy!
+#                 * id: \4
+#                   name: "çalış öğün"
+#                 * id: \5
+#                   name: "ÇALIŞ ÖĞÜN"
+#             list2:
+#                 * id: \aaa
+#                   name: \totally
+#                 * id: \bbb
+#                   name: \different
+#                 * id: \ccc
+#                   name: \list
+#             boundSelected: null
+#         # date-picker:
+#         #     show: yes
+#         # checkbox:
+#         #     checked1: no
+#         #     checked2: no
+#         # file-read:
+#         #     show: yes
+#         #     files: []
+#         # todo:
+#         #     show: yes
+#         #     todos1:
+#         #         * id: 1
+#         #           content: 'This is done by default'
+#         #           done-timestamp: 1481778240000
+#         #         * id: 2
+#         #           content: 'This is done by default too'
+#         #           done-timestamp: 1481778242000
+#         #         * id: 3
+#         #           content: 'This can not be undone'
+#         #           can-undone: false
+#         #         * id: 4
+#         #           content: 'This has a due time'
+#         #           due-timestamp: 1481778240000
+#         #         * id: 5
+#         #           content: 'This depends on 1 and 2'
+#         #         * id: 6
+#         #           content: 'This depends on 3 and 5 (above one)'
 
-    test-ack-button2: (ev, value) ->
-        ev.component.fire \state, \doing
-        <- sleep 3000ms
-        ev.component.fire \state, \error, "handler 2 got message: #{value}"
-        <- sleep 3000ms
-        ev.component.fire \state, \done
+#         #     log1: []
+#         #     todos2:
+#         #         * id: 1
+#         #           content: 'Do this'
+#         #         * id: 2
+#         #           content: 'Do that'
+#         #         * id: 3
+#         #           content: 'Finally do this'
+#         #     log2: []
+#         # unix-to-readable: unix-to-readable
+#         # menu: []
+#         # menu-links:
+#         #     * title: "Siparişler"
+#         #       url: '#/orders'
+#         #       icon: "credit-card"
+#         #     * title: "İş Planları"
+#         #       url: '#/production-jobs'
+#         #       icon: "list-alt"
+#         #     * title: "Paketleme"
+#         #       url: '#/bundling'
+#         #       icon: 'gift'
+#         #     * title: "Sevkiyat"
+#         #       icon: 'road'
+#         #       sub-menu:
+#         #         * title: "dispatch submenu1"
+#         #           url: '#/dispatch/1'
+#         #         * title: "dispatch submenu2"
+#         #           url: '#/dispatch/2'
+#         #         * title: "dispatch submenu3"
+#         #           url: '#/dispatch/3'
+#         #         * title: "dispatch submenu4"
+#         #           url: '#/dispatch/4'
 
-    test-ack-button3: (ev, value) ->
-        ev.component.fire \info, do
-            title: "this is an example info"
-            message: value or "test info..."
+#         #     * title: "Depo İstek Formu"
+#         #       url: '#/raw-material-requests'
+#         #       icon: 'shopping-cart'
+#         #     * title: "Satın Alma"
+#         #       url: '#/raw-material-purchases'
+#         #       icon: 'briefcase'
+#         #     * title: "Hammadde Kabul"
+#         #       url: '#/raw-material-admission'
+#         #       icon: 'download-alt'
+#         #     * title: "Tanımlamalar"
+#         #       icon:"cog"
+#         #       sub-menu:
+#         #         * title: "Müşteri Tanımla"
+#         #           url: '#/definitions/client'
+#         #         * title: "Marka Tanımla"
+#         #           url: '#/definitions/brands'
+#         #         * title: "Tedarikçi Tanımla"
+#         #           url: '#/definitions/supplier'
+#         #         * title: "Hammadde Tanımla"
+#         #           url: '#/definitions/raw-material'
+#         #         * title: "Reçete Tanımla"
+#         #           url: '#/definitions/recipe'
+#         #         * title: "Kap Tanımla"
+#         #           url: '#/definitions/container'
+#         #         * title: "Paket Tanımla"
+#         #           url: '#/definitions/packaging'
+#         #         * title: "Çalışan Tanımla"
+#         #           url: '#/definitions/workers'
+#         #           icon: 'user'
 
-    test-ack-button5: (ev) ->
-        ev.component.fire \info, 'this is a test string (info)'
+# ractive.on do
+#     'complete': ->
+#         __ = @
+#         <- sleep 1000ms
+#         __.set \menu, __.get \menuLinks
 
-    test-ack-button4: (ev, value) ->
-        console.log "asking if yes or no"
-        ok <- ev.component.fire \yesno, do
-            title: 'well...'
-            message: value or 'are you sure?'
+#     test-ack-button1: (ev, value) ->
+#         ev.component.fire \state, \doing
+#         <- sleep 5000ms
+#         ractive.set \button.sendValue, value
+#         ev.component.fire \state, \done...
 
-        unless ok
-            msg = "User says it's not OK to continue!"
-            ev.component.fire \output, msg
-            console.error msg
-            return
+#     test-ack-button2: (ev, value) ->
+#         ev.component.fire \state, \doing
+#         <- sleep 3000ms
+#         ev.component.fire \state, \error, "handler 2 got message: #{value}"
+#         <- sleep 3000ms
+#         ev.component.fire \state, \done
 
-        ok <- ev.component.fire \yesno, do
-            title: 'HTML test'
-            message: html: """
-                <h1>This is header</h1>
-                <span class="glyphicon glyphicon-ok-sign" style="font-size: 2em"></span>
-                <span>This is an icon...</span>
-                """
+#     test-ack-button3: (ev, value) ->
+#         ev.component.fire \info, do
+#             title: "this is an example info"
+#             message: value or "test info..."
 
-        unless ok
-            msg = "User says it's not OK to continue!"
-            ev.component.fire \output, msg
-            console.error msg
-            return
+#     test-ack-button5: (ev) ->
+#         ev.component.fire \info, 'this is a test string (info)'
 
-        msg = "It's OK to go..."
-        console.log msg
-        ev.component.fire \output, msg
+#     test-ack-button4: (ev, value) ->
+#         console.log "asking if yes or no"
+#         ok <- ev.component.fire \yesno, do
+#             title: 'well...'
+#             message: value or 'are you sure?'
 
-    checkboxchanged: (ev, curr-state, intended-state, value) ->
-        console.log "checkbox event fired, curr: #{curr-state}"
-        ev.component.fire \state, \doing
-        <- sleep 2000ms
-        ev.component.fire \state, intended-state
+#         unless ok
+#             msg = "User says it's not OK to continue!"
+#             ev.component.fire \output, msg
+#             console.error msg
+#             return
 
-    my-print: (html, value, callback) ->
-        callback err=null, body: """
-            <h1>This is value: #{value}</h1>
-            #{html}
-            """
+#         ok <- ev.component.fire \yesno, do
+#             title: 'HTML test'
+#             message: html: """
+#                 <h1>This is header</h1>
+#                 <span class="glyphicon glyphicon-ok-sign" style="font-size: 2em"></span>
+#                 <span>This is an icon...</span>
+#                 """
 
-    todostatechanged: (ev, list, item-index) ->
-        the-item = list[item-index]
-        new-state = if the-item.is-done then \checked else \unchecked
-        old-state = if new-state is \checked then \unchecked else \checked
-        console.log "Bound components: todo item with id of '" + the-item.id + "' state's changed from '" + old-state + "' to '" + new-state + "'"
+#         unless ok
+#             msg = "User says it's not OK to continue!"
+#             ev.component.fire \output, msg
+#             console.error msg
+#             return
 
-    todocompletion: ->
-        console.log "Bound components: all todo items has been done"
+#         msg = "It's OK to go..."
+#         console.log msg
+#         ev.component.fire \output, msg
 
-    todotimeout: (item) ->
-        console.log "Bound components: item with id of '" + item.id + "' in the list had been timed out"
-        console.log item
+#     checkboxchanged: (ev, curr-state, intended-state, value) ->
+#         console.log "checkbox event fired, curr: #{curr-state}"
+#         ev.component.fire \state, \doing
+#         <- sleep 2000ms
+#         ev.component.fire \state, intended-state
 
-    todostatechanged2: (ev, list, item-index) ->
-        the-item = list[item-index]
-        new-state = if the-item.is-done then \checked else \unchecked
-        old-state = if new-state is \checked then \unchecked else \checked
-        console.log "UnBound instance: todo item with id of '" + the-item.id + "' state's changed from '" + old-state + "' to '" + new-state + "'"
+#     my-print: (html, value, callback) ->
+#         callback err=null, body: """
+#             <h1>This is value: #{value}</h1>
+#             #{html}
+#             """
 
-    todocompletion2: ->
-        console.log "UnBound instance: all todo items has been done"
+#     todostatechanged: (ev, list, item-index) ->
+#         the-item = list[item-index]
+#         new-state = if the-item.is-done then \checked else \unchecked
+#         old-state = if new-state is \checked then \unchecked else \checked
+#         console.log "Bound components: todo item with id of '" + the-item.id + "' state's changed from '" + old-state + "' to '" + new-state + "'"
 
-    todotimeout2: (item) ->
-        console.log "UnBound instance: item with id of '" + item.id + "' in the list had been timed out"
-        console.log item
+#     todocompletion: ->
+#         console.log "Bound components: all todo items has been done"
 
-    uploadReadFile: (ev, file, next) ->
-        ev.component.fire \state, \doing
-        console.log "Appending file: #{file.name}"
-        ractive.push 'fileRead.files', file
-        /*
-        answer <- ev.component.fire \yesno, message: """
-            do you want to proceed?
-        """
-        ev.component.fire \state, \error, "cancelled!" if answer is no
-        */
-        ev.component.fire \state, \done
-        <- sleep 2000ms
-        next!
+#     todotimeout: (item) ->
+#         console.log "Bound components: item with id of '" + item.id + "' in the list had been timed out"
+#         console.log item
 
-    fileReadClear: (ev) ->
-        ractive.set \fileRead.files, []
-        ev.component.fire \info, message: "cleared!"
+#     todostatechanged2: (ev, list, item-index) ->
+#         the-item = list[item-index]
+#         new-state = if the-item.is-done then \checked else \unchecked
+#         old-state = if new-state is \checked then \unchecked else \checked
+#         console.log "UnBound instance: todo item with id of '" + the-item.id + "' state's changed from '" + old-state + "' to '" + new-state + "'"
 
-    import-csv: (ev, content) ->
-        ev.component.fire \state, \doing
-        console.log "content: ", content
-        ractive.set \csvContent, content
-        ev.component.fire \state, \done...
-    test-formal-field: (ev, log-item, finish) ->
-        /*
-        ev.component.fire \state, \doing
-        <- sleep 3000ms
-        ev.component.fire \state, \done...
-        */
-        formal-field = ractive.get \formalField
-        formal-field.value1 = log-item.curr.value1
-        formal-field.value2 = log-item.curr.value2
-        ractive.set \previous, log-item.prev
-        formalField.changelog = ev.add-to-changelog log-item
-        ractive.set \formalField, formal-field
-        finish!
+#     todocompletion2: ->
+#         console.log "UnBound instance: all todo items has been done"
 
-    test-formal-field-show:(ev, log) ->
-        string = """
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date &nbsp</th>
-                        <th>Amount &nbsp</th>
-                        <th>Unit &nbsp</th>
-                        <th>Message </th>
-                    </tr>
-                </thead>
-                <tbody>
-            """
+#     todotimeout2: (item) ->
+#         console.log "UnBound instance: item with id of '" + item.id + "' in the list had been timed out"
+#         console.log item
 
-        for row in log
-            string += """
-                <tr style="text-align:middle;">
-                    <td>#{unix-to-readable row.date} &nbsp</td>
-                    <td>#{row.curr.value1} &nbsp</td>
-                    <td>#{row.curr.value2} &nbsp</td>
-                    <td>#{row.message}</td>
-                </tr>
-                """
-        string += """
-                </tbody>
-            </table>
-            """
-        ev.component.fire \info, message: html: string
+#     uploadReadFile: (ev, file, next) ->
+#         ev.component.fire \state, \doing
+#         console.log "Appending file: #{file.name}"
+#         ractive.push 'fileRead.files', file
+#         /*
+#         answer <- ev.component.fire \yesno, message: """
+#             do you want to proceed?
+#         """
+#         ev.component.fire \state, \error, "cancelled!" if answer is no
+#         */
+#         ev.component.fire \state, \done
+#         <- sleep 2000ms
+#         next!
+
+#     fileReadClear: (ev) ->
+#         ractive.set \fileRead.files, []
+#         ev.component.fire \info, message: "cleared!"
+
+#     import-csv: (ev, content) ->
+#         ev.component.fire \state, \doing
+#         console.log "content: ", content
+#         ractive.set \csvContent, content
+#         ev.component.fire \state, \done...
