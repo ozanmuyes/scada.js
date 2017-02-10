@@ -3,5 +3,6 @@ div(name="{{ name }}" style="{{#unless isSelected(curr)}} display: none {{/unles
     | {{#if isAllowed('#'+name).visible}}
     | {{>content}}
     | {{else}}
-    p Demeter: Kısıtlı Erişim
+    | {{>content}}
+    //- p Demeter: Kısıtlı Erişim
     | {{/if}}

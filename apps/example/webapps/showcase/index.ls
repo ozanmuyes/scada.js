@@ -123,54 +123,32 @@ ractive = new Ractive do
         unix-to-readable: unix-to-readable
         menu: []
         menu-links:
-            * title: "Siparişler"
-              url: '#/orders'
-            * title: "İş Planları"
-              url: '#/production-jobs'
-              icon: "list-alt"
-            * title: "Paketleme"
-              url: '#/bundling'
-              icon: 'gift'
-            * title: "Sevkiyat"
-              sub-menu:
-                * title: "dispatch submenu1"
-                  url: '#/dispatch/1'
-                * title: "dispatch submenu2"
-                  url: '#/dispatch/2'
-                * title: "dispatch submenu3"
-                  url: '#/dispatch/3'
-                * title: "dispatch submenu4"
-                  url: '#/dispatch/4'
-
-            * title: "Depo İstek Formu"
-              url: '#/raw-material-requests'
-              icon: 'shopping-cart'
-            * title: "Satın Alma"
-              url: '#/raw-material-purchases'
-              icon: 'briefcase'
-            * title: "Hammadde Kabul"
-              url: '#/raw-material-admission'
-              icon: 'download-alt'
-            * title: "Tanımlamalar"
-              icon:"cog"
-              sub-menu:
-                * title: "Müşteri Tanımla"
-                  url: '#/definitions/client'
-                * title: "Marka Tanımla"
-                  url: '#/definitions/brands'
-                * title: "Tedarikçi Tanımla"
-                  url: '#/definitions/supplier'
-                * title: "Hammadde Tanımla"
-                  url: '#/definitions/raw-material'
-                * title: "Reçete Tanımla"
-                  url: '#/definitions/recipe'
-                * title: "Kap Tanımla"
-                  url: '#/definitions/container'
-                * title: "Paket Tanımla"
-                  url: '#/definitions/packaging'
-                * title: "Çalışan Tanımla"
-                  url: '#/definitions/workers'
-                  icon: 'user'
+            * title: "r-table"
+              url: "#/r-table"
+            * title: "formal-field"
+              url: "#/formal-field"
+            * title: "csv-importer"
+              url: "#/csv-importer"
+            * title: "file-read"
+              url: "#/file-read"
+            * title: "print-button"
+              url: "#/print-button"
+            * title: "input-field"
+              url: "#/input-field"
+            * title: "checkbox"
+              url: "#/checkbox"
+            * title: "ack-button"
+              url: "#/ack-button"
+            * title: "example-component"
+              url: "#/example-component"
+            * title: "search-combobox"
+              url: "#/search-combobox"
+            * title: "date-picker"
+              url: "#/date-picker"
+            * title: "test-data-table"
+              url: "#/test-data-table"
+            * title: "todo"
+              url: "#/todo"
 
 ractive.on do
     'complete': ->

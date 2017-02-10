@@ -1,3 +1,6 @@
+// this is the navigation engine
+navigation(selected="{{ currPage }}")
+
 aea-theme
     aea-menu2(menu="{{menu}}" debug="{{ menuDebug }}")
         icon-user
@@ -9,19 +12,32 @@ aea-theme
             p hi! this is header!
 
         +partial('body')
-            include ./previews/r-table.pug
-            include ./previews/formal-field.pug
-            include ./previews/csv-importer.pug
-            include ./previews/file-read.pug
-            include ./previews/print-button.pug
-            include ./previews/input-field.pug
-            include ./previews/checkbox.pug
-            include ./previews/ack-button.pug
-            include ./previews/example-component.pug
-            include ./previews/search-combobox.pug
-            include ./previews/date-picker.pug
-            include ./previews/test-data-table/my-table.pug
-            include ./previews/todo.pug
+            page(landing-page="true" name="/r-table", curr="{{ currPage }}")
+                include ./previews/r-table.pug
+            page(name="/formal-field", curr="{{ currPage }}")
+                include ./previews/formal-field.pug
+            page(name="/csv-importer", curr="{{ currPage }}")
+                include ./previews/csv-importer.pug
+            page(name="/file-read", curr="{{ currPage }}")
+                include ./previews/file-read.pug
+            page(name="/print-button", curr="{{ currPage }}")
+                include ./previews/print-button.pug
+            page(name="/input-field", curr="{{ currPage }}")
+                include ./previews/input-field.pug
+            page(name="/checkbox", curr="{{ currPage }}")
+                include ./previews/checkbox.pug
+            page(name="/ack-button", curr="{{ currPage }}")
+                include ./previews/ack-button.pug
+            page(name="/example-component", curr="{{ currPage }}")
+                include ./previews/example-component.pug
+            page(name="/search-combobox", curr="{{ currPage }}")
+                include ./previews/search-combobox.pug
+            page(name="/date-picker", curr="{{ currPage }}")
+                include ./previews/date-picker.pug
+            page(name="/test-data-table/my-table", curr="{{ currPage }}")
+                include ./previews/test-data-table/my-table.pug
+            page(name="/todo", curr="{{ currPage }}")
+                include ./previews/todo.pug
 
     aea-footer
         +partial('right')
